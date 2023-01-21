@@ -1,22 +1,18 @@
-import { Container } from 'components/ui';
-import { Header } from 'components/ui';
-import { Section } from 'components/ui';
-import { ContactForm } from 'components/ContactForm';
-import { ContactsList } from 'components/ContactsList';
-import { Filter } from 'components/Filter';
+import 'modern-normalize';
+import { Container } from './components/common/Container.styled';
+import { Title } from 'components/common/Title.styled';
+import { MyForm } from './components/Form/Form';
+import { Filter } from './components/Filter/Filter';
+import { ContactsList } from './components/ContactsList/ContactsList';
 
-
-export const App = () => {
-return (
-  <Container>
-    <Header>Phonebook</Header>
-    <Section>
-      <ContactForm />
-    </Section>
-    <Section title={"Contacts"}>
+export function App() {
+  return (
+    <Container>
+      <Title>Contact App</Title>
+      <MyForm />
+      <Title>Search by name</Title>
       <Filter />
       <ContactsList />
-    </Section>
-  </Container>
+    </Container>
   );
-};
+}

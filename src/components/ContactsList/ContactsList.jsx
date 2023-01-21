@@ -1,24 +1,39 @@
-import { useDispatch, useSelector } from "react-redux";
-import { deleteContact} from 'redux/contacts/contacts-actions';
-import { Contact } from "./Contact";
-import { List } from "components/ui";
-import { getContacts } from "redux/contacts/contacts-selectors";
-
+import { useSelector, useDispatch } from 'react-redux/es/exports';
+import { deleteItem, getItemsValue, getFilterValue } from 'redux/contacts';
+import { ContactsListItem, ContactsListButton } from './ContactsList.styled';
+import { IoCloseOutline } from 'react-icons/io5';
 
 export const ContactsList = () => {
+  const filter = useSelector(getFilterValue);
+  const items = useSelector(getItemsValue);
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+
+  const normalizedValue = filter.toLowerCase();
+  const filteredArray = items.filter(option =>
+    option.name.toLowerCase().includes(normalizedValue)
+  );
+
+  const deleteContact = contactId => {
+    dispatch(deleteItem(contactId));
+  };
 
   return (
-    <List>
-      {contacts.map(({id, name, number}) => (
-        <Contact key={id} id={id}
-            name={name} number={number}
-            onDelete={id => dispatch(deleteContact(id))}
-        />)
-      )}
-    </List>
+    <ul>
+      {filteredArray.map(({ id, name, number }) => {
+        return (
+          <ContactsListItem key={id}>
+            {name}: {number}
+            <ContactsListButton
+              onClick={() => {
+                deleteContact(id);
+              }}
+            >
+              <IoCloseOutline />
+              Delete
+            </ContactsListButton>
+          </ContactsListItem>
+        );
+      })}
+    </ul>
   );
 };
-
-
